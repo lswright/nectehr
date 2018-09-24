@@ -36,13 +36,11 @@
       "16": "katalon/images/branding_16.png",
       "48": "katalon/images/branding_48.png"
    },
-   //"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPBt0KSi9NMDRIecv0hJc/Qd+lNiG1OH23YppKEtBxtrBLM34ytpdfUx5uLS9bRQMagFQe3/eNL4nD0xRBsix/OPyDnCXKk4PR4Ck3AuTOVCr6b7cdnKe4l5DCmQvZNW56WntrkUaWkvNtmfuGpWPPiHxUcJQnEBnwktbNaSBDUnjLmHqsJBlON4OnGCexNe8keLQ8ukXPVkEcpWgiCZftMwDj9NQgy5z+nhyWED0li/bavNLe4lHAa/pxf71Y1wUk5dXk1974cXu72oOdgOYbemFCwjyltm4Np3ip7vpbgiJEmONU8j6uQsU8VGkjtN6hqyrIhYzN0UYoznGTWsdwIDAQAB",
    "manifest_version": 2,
-   "name": "Nectehr clinical system integration",
+   "name":"Nectehr clinical system integration",
    "offline_enabled": true,
    "options_page": "katalon/options.html",
    "permissions": [ "tabs", "activeTab", "webRequest", "contextMenus", "downloads", "webNavigation", "notifications", "http://*/", "https://*/", "storage", "unlimitedStorage", "\u003Call_urls>", "debugger" ],
-   //"update_url": "https://clients2.google.com/service/update2/crx",
    "version": "1.0.0",
    "web_accessible_resources": [ "page/prompt.js", "page/runScript.js" ]
 }
