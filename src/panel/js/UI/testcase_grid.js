@@ -116,55 +116,92 @@ function appendContextMenu(node, isCase) {
             }
         }, false);
         ul.appendChild(rename_case);
+
+        var play_case_from_here = document.createElement("li");
+        a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Play From Here";
+        play_case_from_here.appendChild(a);
+        play_case_from_here.addEventListener("click", function(event) {
+            saveData();
+            emptyNode(document.getElementById("logcontainer"));
+            document.getElementById("result-runs").textContent = "0";
+            document.getElementById("result-failures").textContent = "0";
+            recorder.detach();
+            initAllSuite();
+            // KAT-BEGIN focus on window when playing Action Suite
+            if (contentWindowId) {
+                browser.windows.update(contentWindowId, {focused: true});
+            }
+            declaredVars = {};
+            clearScreenshotContainer();
+            // KAT-END
+
+            var cases = getSelectedSuite().getElementsByTagName("p");
+            var i = 0;
+            while (i < cases.length) {
+                var s_case = getSelectedCase();
+                if (cases[i].id === s_case.id) {
+                    break;
+                }
+                i++;
+            }
+            playSuite(i);
+        }, false);
+        ul.appendChild(play_case_from_here);
     } else {
+        /* KAT-BEGIN hide open Action Suite icon
         var open_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Open Test Suites";
+        a.textContent = "Open Action Suites";
         open_suite.appendChild(a);
         open_suite.addEventListener("click", function(event) {
             event.stopPropagation();
-            document.getElementById('load-testSuite-hidden').click();
+            document.getElementById('load-actionSuite-hidden').click();
         }, false);
         ul.appendChild(open_suite);
+        KAT-END */
 
+        /* KAT-BEGIN hide add Action Suite icon
         var add_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Add New Test Suite";
+        a.textContent = "Add New Action Suite";
         add_suite.appendChild(a);
         add_suite.addEventListener("click", function(event) {
             event.stopPropagation();
-            document.getElementById("add-testSuite").click();
+            document.getElementById("add-actionSuite").click();
         }, false);
         ul.appendChild(add_suite);
+        KAT-END */
 
         var save_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Save Test Suite As...";
+        a.textContent = "Save Action Suite As...";
         save_suite.appendChild(a);
         save_suite.addEventListener("click", function(event) {
             event.stopPropagation();
-            document.getElementById('save-testSuite').click();
+            document.getElementById('save-actionSuite').click();
         }, false);
         ul.appendChild(save_suite);
 
         var close_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Close Test Suite";
+        a.textContent = "Close Action Suite";
         close_suite.appendChild(a);
         close_suite.addEventListener("click", function(event) {
             event.stopPropagation();
-            document.getElementById('close-testSuite').click();
+            document.getElementById('close-actionSuite').click();
         }, false);
         ul.appendChild(close_suite);
 
         var add_case = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Add New Test Case";
+        a.textContent = "Add New Action Case";
         add_case.appendChild(a);
         add_case.addEventListener("click", function(event) {
             event.stopPropagation();
@@ -175,17 +212,17 @@ function appendContextMenu(node, isCase) {
         var rename_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Rename Test Suite";
+        a.textContent = "Rename Action Suite";
         rename_suite.appendChild(a);
         rename_suite.addEventListener("click", function(event) {
             event.stopPropagation();
             var s_suite = getSelectedSuite();
-            var n_title = prompt("Please enter the Test Suite's name", sideex_testSuite[s_suite.id].title);
+            var n_title = prompt("Please enter the Action Suite's name", sideex_actionSuite[s_suite.id].title);
             if (n_title) {
                 // get text node
                 s_suite.getElementsByTagName("STRONG")[0].textContent = n_title;
-                sideex_testSuite[s_suite.id].title = n_title;
-                sideex_testSuite[s_suite.id].file_name = n_title + ".html";
+                sideex_actionSuite[s_suite.id].title = n_title;
+                sideex_actionSuite[s_suite.id].file_name = n_title + ".html";
                 $(s_suite).find("strong").addClass("modified");
                 closeConfirm(true);
             }
@@ -198,17 +235,22 @@ function appendContextMenu(node, isCase) {
 
 function addTestCase(title, id) {
     if (!getSelectedSuite()) {
-        var suite_id = "suite" + sideex_testSuite.count;
-        sideex_testSuite.count++;
-        sideex_testSuite[suite_id] = {
-            file_name: "Untitled Test Suite.html",
-            title: "Untitled Test Suite"
+        var suite_id = "suite" + sideex_actionSuite.count;
+        sideex_actionSuite.count++;
+        sideex_actionSuite[suite_id] = {
+            file_name: "Untitled Action Suite.html",
+            title: "Untitled Action Suite"
         };
-        addTestSuite("Untitled Test Suite", suite_id);
+        addActionSuite("Untitled Action Suite", suite_id);
     }
 
     var p = document.createElement("p");
-    p.textContent = title;
+    // KAT-BEGIN display test case title
+    //p.textContent = title;
+    var text = document.createElement("span");
+    text.innerHTML = escapeHTML(title);
+    p.appendChild(text);
+    // KAT-END
     p.setAttribute("id", id);
     p.setAttribute("contextmenu", "menu" + id);
 
@@ -246,6 +288,7 @@ function addTestCase(title, id) {
     p.addEventListener("click", function(event) {
         event.stopPropagation();
         saveOldCase();
+        saveData();
         // use jquery's API to add and remove class property
         cleanSelected();
         this.classList.add("selectedCase");
@@ -283,14 +326,20 @@ function addTestCase(title, id) {
         $(mid).show();
     }, false);
 
+
+    //KAT-BEGIN add context menu button
+    addContextMenuButton(id, p, menu, true);
+    //KAT-END
     closeConfirm(true);
-    
+
     // enable play button
     enableButton("playback");
 }
 
-function addTestSuite(title, id) {
-    // set test suite title div
+
+
+function addActionSuite(title, id) {
+    // set Action Suite title div
     var textDiv = document.createElement("div");
     textDiv.classList.add("test-suite-title");
 
@@ -301,8 +350,11 @@ function addTestSuite(title, id) {
     saveIcon.setAttribute("aria-hidden", "true");
     saveIcon.addEventListener("click", clickSaveIcon);
     textDiv.appendChild(saveIcon);
+    // KAT-BEGIN hide save icon
+    $(saveIcon).hide();
+    // KAT-END
 
-    // set test suite title
+    // set Action Suite title
     var text = document.createElement("strong");
     text.classList.add("test-suite-title");
     text.innerHTML = escapeHTML(title);
@@ -316,14 +368,17 @@ function addTestSuite(title, id) {
     plusIcon.setAttribute("aria-hidden", "true");
     plusIcon.addEventListener("click", clickCasePlusIcon);
     textDiv.appendChild(plusIcon);
+    // KAT-BEGIN hide plus icon
+    $(plusIcon).hide();
+    // KAT-END
 
-    // set test suite div
+    // set Action Suite div
     var div = document.createElement("div");
     div.setAttribute("id", id);
     div.setAttribute("contextmenu", "menu" + id);
     div.setAttribute("class", "message");
-    div.addEventListener("mouseover", mouseOnAndOutTestSuite);
-    div.addEventListener("mouseout", mouseOnAndOutTestSuite);
+    div.addEventListener("mouseover", mouseOnAndOutActionSuite);
+    div.addEventListener("mouseout", mouseOnAndOutActionSuite);
     div.appendChild(textDiv);
 
     var s_suite = getSelectedSuite();
@@ -368,6 +423,10 @@ function addTestSuite(title, id) {
 
     makeCaseSortable(div);
 
+    //KAT-BEGIN add context menu button
+    addContextMenuButton(id, textDiv, menu, false);
+    //KAT-END
+
     // enable play button
     enableButton("playSuites");
     enableButton("playSuite");
@@ -378,23 +437,23 @@ function modifyCaseSuite() {
     getSelectedSuite().getElementsByTagName("strong")[0].classList.add("modified");
 }
 
-document.getElementById("add-testSuite").addEventListener("click", function(event) {
+document.getElementById("add-actionSuite").addEventListener("click", function(event) {
     event.stopPropagation();
-    var title = prompt("Please enter the Test Suite's name", "Untitled Test Suite");
+    var title = prompt("Please enter the Action Suite's name", "Untitled Action Suite");
     if (title) {
-        var id = "suite" + sideex_testSuite.count;
-        sideex_testSuite.count++;
-        sideex_testSuite[id] = {
+        var id = "suite" + sideex_actionSuite.count;
+        sideex_actionSuite.count++;
+        sideex_actionSuite[id] = {
             file_name: title + ".html",
             title: title
         };
-        addTestSuite(title, id);
+        addActionSuite(title, id);
     }
 }, false);
 
-document.getElementById("add-testSuite-menu").addEventListener("click", function(event) {
+document.getElementById("add-actionSuite-menu").addEventListener("click", function(event) {
     event.stopPropagation();
-    document.getElementById('add-testSuite').click();
+    document.getElementById('add-actionSuite').click();
 }, false);
 
 var confirmCloseSuite = function(question) {
@@ -427,23 +486,24 @@ var confirmCloseSuite = function(question) {
     return defer.promise();
 };
 
-var remove_testSuite = function() {
+var remove_actionSuite = function() {
     var s_suite = getSelectedSuite();
-    sideex_testSuite[s_suite.id] = null;
+    sideex_actionSuite[s_suite.id] = null;
     s_suite.parentNode.removeChild(s_suite);
     clean_panel();
+    saveData();
 };
 
-document.getElementById("close-testSuite").addEventListener('click', function(event) {
+document.getElementById("close-actionSuite").addEventListener('click', function(event) {
     event.stopPropagation();
     var s_suite = getSelectedSuite();
     if (s_suite) {
         if ($(s_suite).find(".modified").length) {
-            confirmCloseSuite("Would you like to save this test suite?").then(function(answer) {
+            confirmCloseSuite("Would you like to save this Action Suite?").then(function(answer) {
                 if (answer === "true")
-                    downloadSuite(s_suite, remove_testSuite);
+                    downloadSuite(s_suite, remove_actionSuite);
                 else
-                    remove_testSuite(s_suite);
+                    remove_actionSuite(s_suite);
 
                 // disable play button when there is no suite
                 if (getSuiteNum() == 0) {
@@ -453,19 +513,19 @@ document.getElementById("close-testSuite").addEventListener('click', function(ev
                 }
             });
         } else {
-            remove_testSuite(s_suite);
+            remove_actionSuite(s_suite);
             // disable play button when there is no suite
             if (getSuiteNum() == 0) {
                 disableButton("playback");
                 disableButton("playSuite");
                 disableButton("playSuites");
-            }    
+            }
         }
     }
 }, false);
 
 document.getElementById("add-testCase").addEventListener("click", function(event) {
-    var title = prompt("Please enter the Test Case's name", "Untitled Test Case");
+    var title = prompt("Please enter the Action Case's name", "Untitled Action Case");
     if (title) {
         var id = "case" + sideex_testCase.count;
         sideex_testCase.count++;
@@ -514,15 +574,15 @@ function clickCasePlusIcon(event) {
 function clickSaveIcon(event) {
     event.stopPropagation();
     event.target.parentNode.parentNode.click();
-    document.getElementById('save-testSuite').click();
+    document.getElementById('save-actionSuite').click();
 }
 
 function clickSuitePlusIcon(event) {
-    document.getElementById("add-testSuite").click();
+    document.getElementById("add-actionSuite").click();
 }
 
 function clickSuiteOpenIcon(event) {
-    document.getElementById("load-testSuite-hidden").click();
+    document.getElementById("load-actionSuite-hidden").click();
 }
 
 document.getElementById("suite-plus").addEventListener("click", clickSuitePlusIcon);

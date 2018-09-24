@@ -21,133 +21,67 @@ var storedVars = new Object();
 
 var unicodeToKeys = {};
 
-/*function build_sendkeys_maps() {
-
-    //  add_sendkeys_key("NULL", '\uE000');
-    //  add_sendkeys_key("CANCEL", '\uE001'); // ^break
-    //  add_sendkeys_key("HELP", '\uE002');
-    add_sendkeys_key("BACKSPACE", '\uE003');
-    add_sendkeys_key("TAB", '\uE004');
-    //  add_sendkeys_key("CLEAR", '\uE005');
-    //  add_sendkeys_key("RETURN", '\uE006');
-    add_sendkeys_key("ENTER", '\uE007');
-    add_sendkeys_key("SHIFT", '\uE008');
-    add_sendkeys_key("CONTROL", '\uE009');
-    add_sendkeys_key("ALT", '\uE00A');
-    add_sendkeys_key("PAUSE", '\uE00B');
-    add_sendkeys_key("ESC", '\uE00C');
-    add_sendkeys_key("SPACE", '\uE00D');
-    add_sendkeys_key("PAGE_UP", '\uE00E');
-    add_sendkeys_key("PAGE_DOWN", '\uE00F');
-    add_sendkeys_key("END", '\uE010');
-    add_sendkeys_key("HOME", '\uE011');
-    add_sendkeys_key("LEFT", '\uE012');
-    add_sendkeys_key("UP", '\uE013');
-    add_sendkeys_key("RIGHT", '\uE014');
-    add_sendkeys_key("DOWN", '\uE015');
-    add_sendkeys_key("INSERT", '\uE016');
-    add_sendkeys_key("DELETE", '\uE017');
-    add_sendkeys_key("SEMICOLON", '\uE018');
-    add_sendkeys_key("EQUALS", '\uE019');
-
-    add_sendkeys_key("NUMPAD0", '\uE01A', "NUM_ZERO"); // number pad keys
-    add_sendkeys_key("NUMPAD1", '\uE01B', "NUM_ONE");
-    add_sendkeys_key("NUMPAD2", '\uE01C', "NUM_TWO");
-    add_sendkeys_key("NUMPAD3", '\uE01D', "NUM_THREE");
-    add_sendkeys_key("NUMPAD4", '\uE01E', "NUM_FOUR");
-    add_sendkeys_key("NUMPAD5", '\uE01F', "NUM_FIVE");
-    add_sendkeys_key("NUMPAD6", '\uE020', "NUM_SIX");
-    add_sendkeys_key("NUMPAD7", '\uE021', "NUM_SEVEN");
-    add_sendkeys_key("NUMPAD8", '\uE022', "NUM_EIGHT");
-    add_sendkeys_key("NUMPAD9", '\uE023', "NUM_NINE");
-    add_sendkeys_key("MULTIPLY", '\uE024', "NUM_MULTIPLY");
-    add_sendkeys_key("ADD", '\uE025', "NUM_PLUS");
-    add_sendkeys_key("SEPARATOR", '\uE026');
-    add_sendkeys_key("SUBTRACT", '\uE027', "NUM_MINUS");
-    add_sendkeys_key("DECIMAL", '\uE028', "NUM_PERIOD");
-    add_sendkeys_key("DIVIDE", '\uE029', "NUM_DIVISION");
-
-    add_sendkeys_key("F1", '\uE031'); // function keys
-    add_sendkeys_key("F2", '\uE032');
-    add_sendkeys_key("F3", '\uE033');
-    add_sendkeys_key("F4", '\uE034');
-    add_sendkeys_key("F5", '\uE035');
-    add_sendkeys_key("F6", '\uE036');
-    add_sendkeys_key("F7", '\uE037');
-    add_sendkeys_key("F8", '\uE038');
-    add_sendkeys_key("F9", '\uE039');
-    add_sendkeys_key("F10", '\uE03A');
-    add_sendkeys_key("F11", '\uE03B');
-    add_sendkeys_key("F12", '\uE03C');
-
-    add_sendkeys_key("META", '\uE03D', "COMMAND");
-
-}*/
+var keyboardEventKeys = {};
 
 function build_sendkeys_maps() {
 
-    //  add_sendkeys_key("NULL", '\uE000');
-    //  add_sendkeys_key("CANCEL", '\uE001'); // ^break
-    //  add_sendkeys_key("HELP", '\uE002');
-    add_sendkeys_key("BACKSPACE", '\uE003', "BKSP");
-    add_sendkeys_key("TAB", '\uE004');
-    //  add_sendkeys_key("CLEAR", '\uE005');
-    //  add_sendkeys_key("RETURN", '\uE006');
-    add_sendkeys_key("ENTER", '\uE007');
-    add_sendkeys_key("SHIFT", '\uE008');
-    add_sendkeys_key("CONTROL", '\uE009', "CTRL");
-    add_sendkeys_key("ALT", '\uE00A');
-    add_sendkeys_key("PAUSE", '\uE00B');
-    add_sendkeys_key("ESC", '\uE00C', "ESCAPE");
-    add_sendkeys_key("SPACE", '\uE00D');
-    add_sendkeys_key("PAGE_UP", '\uE00E', "PGUP");
-    add_sendkeys_key("PAGE_DOWN", '\uE00F', "PGDN");
-    add_sendkeys_key("END", '\uE010');
-    add_sendkeys_key("HOME", '\uE011');
-    add_sendkeys_key("LEFT", '\uE012');
-    add_sendkeys_key("UP", '\uE013');
-    add_sendkeys_key("RIGHT", '\uE014');
-    add_sendkeys_key("DOWN", '\uE015');
-    add_sendkeys_key("INSERT", '\uE016', "INS");
-    add_sendkeys_key("DELETE", '\uE017', "DEL");
-    add_sendkeys_key("SEMICOLON", '\uE018');
-    add_sendkeys_key("EQUALS", '\uE019');
+    add_sendkeys_key("Backspace", "BACKSPACE", '\uE003', "BKSP");
+    add_sendkeys_key("Tab", "TAB", '\uE004');
+    add_sendkeys_key("Enter", "ENTER", '\uE007');
+    add_sendkeys_key("Shift", "SHIFT", '\uE008');
+    add_sendkeys_key("Control", "CONTROL", '\uE009', "CTRL");
+    add_sendkeys_key("Alt", "ALT", '\uE00A');
+    add_sendkeys_key("Pause", "PAUSE", '\uE00B');
+    add_sendkeys_key("Escape", "ESC", '\uE00C', "ESCAPE");
+    add_sendkeys_key(null, "SPACE", '\uE00D');
+    add_sendkeys_key("PageUp", "PAGE_UP", '\uE00E', "PGUP");
+    add_sendkeys_key("PageDown", "PAGE_DOWN", '\uE00F', "PGDN");
+    add_sendkeys_key("End", "END", '\uE010');
+    add_sendkeys_key("Home", "HOME", '\uE011');
+    add_sendkeys_key("ArrowLeft", "LEFT", '\uE012');
+    add_sendkeys_key("ArrowUp", "UP", '\uE013');
+    add_sendkeys_key("ArrowRight", "RIGHT", '\uE014');
+    add_sendkeys_key("ArrowDown", "DOWN", '\uE015');
+    add_sendkeys_key("Insert", "INSERT", '\uE016', "INS");
+    add_sendkeys_key("Delete", "DELETE", '\uE017', "DEL");
+    add_sendkeys_key(null, "SEMICOLON", '\uE018');
+    add_sendkeys_key(null, "EQUALS", '\uE019');
 
-    add_sendkeys_key("NUMPAD0", '\uE01A', "N0", "NUM_ZERO"); // number pad keys
-    add_sendkeys_key("NUMPAD1", '\uE01B', "N1", "NUM_ONE");
-    add_sendkeys_key("NUMPAD2", '\uE01C', "N2", "NUM_TWO");
-    add_sendkeys_key("NUMPAD3", '\uE01D', "N3", "NUM_THREE");
-    add_sendkeys_key("NUMPAD4", '\uE01E', "N4", "NUM_FOUR");
-    add_sendkeys_key("NUMPAD5", '\uE01F', "N5", "NUM_FIVE");
-    add_sendkeys_key("NUMPAD6", '\uE020', "N6", "NUM_SIX");
-    add_sendkeys_key("NUMPAD7", '\uE021', "N7", "NUM_SEVEN");
-    add_sendkeys_key("NUMPAD8", '\uE022', "N8", "NUM_EIGHT");
-    add_sendkeys_key("NUMPAD9", '\uE023', "N9", "NUM_NINE");
-    add_sendkeys_key("MULTIPLY", '\uE024', "MUL", "NUM_MULTIPLY");
-    add_sendkeys_key("ADD", '\uE025', "PLUS", "NUM_PLUS");
-    add_sendkeys_key("SEPARATOR", '\uE026', "SEP");
-    add_sendkeys_key("SUBTRACT", '\uE027', "MINUS", "NUM_MINUS");
-    add_sendkeys_key("DECIMAL", '\uE028', "PERIOD", "NUM_PERIOD");
-    add_sendkeys_key("DIVIDE", '\uE029', "DIV", "NUM_DIVISION");
+    add_sendkeys_key(null, "NUMPAD0", '\uE01A', "N0", "NUM_ZERO"); // number pad keys
+    add_sendkeys_key(null, "NUMPAD1", '\uE01B', "N1", "NUM_ONE");
+    add_sendkeys_key(null, "NUMPAD2", '\uE01C', "N2", "NUM_TWO");
+    add_sendkeys_key(null, "NUMPAD3", '\uE01D', "N3", "NUM_THREE");
+    add_sendkeys_key(null, "NUMPAD4", '\uE01E', "N4", "NUM_FOUR");
+    add_sendkeys_key(null, "NUMPAD5", '\uE01F', "N5", "NUM_FIVE");
+    add_sendkeys_key(null, "NUMPAD6", '\uE020', "N6", "NUM_SIX");
+    add_sendkeys_key(null, "NUMPAD7", '\uE021', "N7", "NUM_SEVEN");
+    add_sendkeys_key(null, "NUMPAD8", '\uE022', "N8", "NUM_EIGHT");
+    add_sendkeys_key(null, "NUMPAD9", '\uE023', "N9", "NUM_NINE");
+    add_sendkeys_key(null, "MULTIPLY", '\uE024', "MUL", "NUM_MULTIPLY");
+    add_sendkeys_key(null, "ADD", '\uE025', "PLUS", "NUM_PLUS");
+    add_sendkeys_key(null, "SEPARATOR", '\uE026', "SEP");
+    add_sendkeys_key(null, "SUBTRACT", '\uE027', "MINUS", "NUM_MINUS");
+    add_sendkeys_key(null, "DECIMAL", '\uE028', "PERIOD", "NUM_PERIOD");
+    add_sendkeys_key(null, "DIVIDE", '\uE029', "DIV", "NUM_DIVISION");
 
-    add_sendkeys_key("F1", '\uE031'); // function keys
-    add_sendkeys_key("F2", '\uE032');
-    add_sendkeys_key("F3", '\uE033');
-    add_sendkeys_key("F4", '\uE034');
-    add_sendkeys_key("F5", '\uE035');
-    add_sendkeys_key("F6", '\uE036');
-    add_sendkeys_key("F7", '\uE037');
-    add_sendkeys_key("F8", '\uE038');
-    add_sendkeys_key("F9", '\uE039');
-    add_sendkeys_key("F10", '\uE03A');
-    add_sendkeys_key("F11", '\uE03B');
-    add_sendkeys_key("F12", '\uE03C');
+    add_sendkeys_key("F1", "F1", '\uE031'); // function keys
+    add_sendkeys_key("F2", "F2", '\uE032');
+    add_sendkeys_key("F3", "F3", '\uE033');
+    add_sendkeys_key("F4", "F4", '\uE034');
+    add_sendkeys_key("F5", "F5", '\uE035');
+    add_sendkeys_key("F6", "F6", '\uE036');
+    add_sendkeys_key("F7", "F7", '\uE037');
+    add_sendkeys_key("F8", "F8", '\uE038');
+    add_sendkeys_key("F9", "F9", '\uE039');
+    add_sendkeys_key("F10", "F10", '\uE03A');
+    add_sendkeys_key("F11", "F11", '\uE03B');
+    add_sendkeys_key("F12", "F12", '\uE03C');
 
-    add_sendkeys_key("META", '\uE03D', "COMMAND");
+    add_sendkeys_key(null, "META", '\uE03D', "COMMAND");
 
 }
 
-function add_sendkeys_key(key, unicodeChar, alias, botKey) {
+function add_sendkeys_key(keyboardEventKey, key, unicodeChar, alias, botKey) {
     botKey = botKey || key;
     if (bot.Keyboard.Keys[botKey]) {
         unicodeToKeys[unicodeChar] = bot.Keyboard.Keys[botKey];
@@ -158,6 +92,9 @@ function add_sendkeys_key(key, unicodeChar, alias, botKey) {
             storedVars['KEY_' + alias] = unicodeChar;
         }
 
+        if (keyboardEventKey) {
+            keyboardEventKeys[unicodeChar] = keyboardEventKey;
+        }
         return true;
     }
     return false;
@@ -237,7 +174,7 @@ function Selenium(browserbot) {
      * </li>
      *
      * <li><strong>css</strong>=<em>cssSelectorSyntax</em>:
-     * Select the element using css selectors. Please refer to <a href="http://www.w3.org/TR/REC-CSS2/selector.html">CSS2 selectors</a>, <a href="http://www.w3.org/TR/2001/CR-css3-selectors-20011113/">CSS3 selectors</a> for more information. You can also check the TestCssLocators test in the selenium test suite for an example of usage, which is included in the downloaded selenium core package.
+     * Select the element using css selectors. Please refer to <a href="http://www.w3.org/TR/REC-CSS2/selector.html">CSS2 selectors</a>, <a href="http://www.w3.org/TR/2001/CR-css3-selectors-20011113/">CSS3 selectors</a> for more information. You can also check the TestCssLocators test in the selenium Action Suite for an example of usage, which is included in the downloaded selenium core package.
      * <ul class="first last simple">
      * <li>css=a[href="#id3"]</li>
      * <li>css=span#firstChild + span</li>
@@ -386,48 +323,61 @@ Selenium.prototype.reset = function() {
     this.browserbot.resetPopups();
 };
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doVerifyText = function(locator, value) {
     var element = this.browserbot.findElement(locator);
     if (getText(element) !== value) {
         throw new Error("Actual value '" + getText(element) + "' did not match '" + value + "'");
     }
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doVerifyTitle = function(value) {
     if (normalizeSpaces(this.getTitle()) !== value) {
         throw new Error("Actual value '" + normalizeSpaces(this.getTitle()) + "' did not match '" + value + "'");
     }
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doVerifyValue = function(locator, value) {
     if (this.getValue(locator) !== value) {
         throw new Error("Actual value '" + this.getValue(locator) + "' did not match '" + value + "'");
     }
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doAssertText = function(locator, value) {
     var element = this.browserbot.findElement(locator);
     if (getText(element) !== value) {
         throw new Error("Actual value '" + getText(element) + "' did not match '" + value + "'");
     }
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doAssertTitle = function(value) {
     if (normalizeSpaces(this.getTitle()) !== value) {
         throw new Error("Actual value '" + normalizeSpaces(this.getTitle()) + "' did not match '" + value + "'");
     }
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doAssertValue = function(locator, value) {
     if (this.getValue(locator) !== value) {
         throw new Error("Actual value '" + this.getValue(locator) + "' did not match '" + value + "'");
     }
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
 Selenium.prototype.doStore = function(value, varName) {
     browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName });
 };
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doStoreText = function(locator, varName) {
     var element = this.browserbot.findElement(locator);
     var text = getText(element);
@@ -435,17 +385,22 @@ Selenium.prototype.doStoreText = function(locator, varName) {
         throw new Error("Error: This element does not have property 'Text'. Please change to use storeValue command.");
     browser.runtime.sendMessage({ "storeStr": text, "storeVar": varName });
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doStoreTitle = function(value, varName) {
     browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName });
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
+/* KAT-BEGIN
 Selenium.prototype.doStoreValue = function(locator, varName) {
     var val = this.getValue(locator);
     if(typeof val === 'undefined')
         throw new Error("Error: This element does not have property 'value'. Please change to use storeText command.");
     browser.runtime.sendMessage({ "storeStr": this.getValue(locator), "storeVar": varName });
 };
+KAT-END */
 // © Ming-Hung Hsu, SideeX Team
 Selenium.prototype.doEcho = function(value) {
     browser.runtime.sendMessage({ "echoStr": value });
@@ -454,6 +409,11 @@ Selenium.prototype.doEcho = function(value) {
 Selenium.prototype.doStoreEval = function(value, varName) {
     browser.runtime.sendMessage({ "storeStr": this.getEval(value), "storeVar": varName });
 };
+/* KAT-BEGIN
+Selenium.prototype.doStoreAttribute = function(locator, varName) {    
+    browser.runtime.sendMessage({ "storeStr": this.getAttribute(locator), "storeVar": varName });
+}
+KAT-END */
 
 // © Yu-Xian Chen, SideeX Team
 Selenium.prototype.doWaitPreparation = function() {
@@ -1015,17 +975,73 @@ Selenium.prototype.doType = function(locator, value) {
      * @param locator an <a href="#locators">element locator</a>
      * @param value the value to type
      */
+
+    var element = this.browserbot.findElement(locator);
+
+    if (element.type === 'file') {
+        if (hasChromeDebugger) {
+            return new Promise(function(resolve, reject) {
+                var krId = new Date().getTime() + '-' + Math.random();
+                element.setAttribute('katalon-recorder-id', krId);
+                browser.runtime.sendMessage({ 
+                    uploadFile: true,
+                    locator: '[katalon-recorder-id="' + krId + '"]',
+                    krId: krId,
+                    file: value
+                }).then(function(result) {
+                    if (result.status) {
+                        resolve('success');
+                    } else {
+                        reject(result.err);
+                    }
+                });
+            });
+        } else {
+            var self = this;
+            return new Promise(function(resolve, reject) {
+                element.focus();
+                setTimeout(
+                    function() {
+                        $.ajax({
+                            type: "POST",
+                            url: 'http://localhost:18910/upload',
+                            data: {
+                                path: value
+                            },
+                            success: function() {
+                                setTimeout(
+                                    function() {
+                                        resolve('success')
+                                    },
+                                    3000
+                                );
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log('Please check if Nectehr helper has started.')
+                                reject(textStatus);
+                            }
+                        });
+                    },
+                    500
+                )
+            });
+        }
+    }
+
     if (this.browserbot.controlKeyDown || this.browserbot.altKeyDown || this.browserbot.metaKeyDown) {
         throw new SeleniumError("type not supported immediately after call to controlKeyDown() or altKeyDown() or metaKeyDown()");
     }
 
-    var element = this.browserbot.findElement(locator);
-
     // © Chen-Chieh Ping, SideeX Team
-    //core.events.setValue(element, value);
+    // core.events.setValue(element, value);
     core.events.setValue(element, '');
     bot.action.type(element, value);
     // END
+};
+
+Selenium.prototype.doSetText = function(locator, value) {
+    var element = this.browserbot.findElement(locator);
+    core.events.setValue(element, value);
 };
 
 Selenium.prototype.doTypeKeys = function(locator, value) {
@@ -1075,6 +1091,76 @@ Selenium.prototype.doSendKeys = function(locator, value) {
      * @param locator an <a href="#locators">element locator</a>
      * @param value the value to type
      */
+/*
+    if (hasChromeDebugger) {
+        var characters = Array.from(value);
+        var keyCodes = [];
+        var eventKeys = [];
+        var eventCodes = [];
+        var modifiers = 0;
+        for (var i = 0; i < characters.length; i++) {
+            var character = characters[i];
+            var key = unicodeToKeys[character];
+            var keyboardEventKey = keyboardEventKeys[character] || character;
+            var keyboardEventCode;
+            if (keyboardEventKeys[character]) {
+                keyboardEventCode = keyboardEventKey;
+            } else {
+                keyboardEventCode = 'Key' + character.toUpperCase();
+            }
+            var keyCode;
+            if (key && key.code) {
+                keyCode = key.code;
+            } else {
+                keyCode = character.charCodeAt(0);
+            }
+            switch (keyboardEventKey) {
+                case 'Alt':
+                    modifiers += 1;
+                    break;
+                case 'Ctrl':
+                    modifiers += 2;
+                    break;
+                case 'Shift':
+                    modifiers += 8;
+                    break;
+                default:
+                    keyCodes.push(keyCode);
+                    if (keyboardEventKey) {
+                        eventKeys.push(keyboardEventKey);
+                    } else {
+                        eventKeys.push(null);
+                    }
+                    if (keyboardEventCode) {
+                        eventCodes.push(keyboardEventCode);
+                    } else {
+                        eventCodes.push(null);
+                    }
+                    break;
+            }
+        }
+        var element = this.browserbot.findElement(locator);
+        return new Promise(function(resolve, reject) {
+            var krId = new Date().getTime() + '-' + Math.random();
+            element.setAttribute('katalon-recorder-id', krId);
+            browser.runtime.sendMessage({ 
+                sendSpecialKeys: true,
+                keyCodes: keyCodes,
+                locator: '[katalon-recorder-id="' + krId + '"]',
+                krId: krId,
+                keyboardEventKeys: eventKeys,
+                keyboardEventCodes: eventCodes,
+                modifiers: modifiers
+            }).then(function(result) {
+                if (result.status) {
+                    resolve('success');
+                } else {
+                    reject(result.err);
+                }
+            });
+        });
+    }
+*/
     if (this.browserbot.controlKeyDown || this.browserbot.altKeyDown || this.browserbot.metaKeyDown) {
         throw new SeleniumError("type not supported immediately after call to controlKeyDown() or altKeyDown() or metaKeyDown()");
     }
@@ -1107,7 +1193,9 @@ Selenium.prototype.doSetSpeed = function(value) {
      *
      * @param value the number of milliseconds to pause after operation
      */
+    /* KAT-BEGIN fix Selenium command execution
     throw new SeleniumError("this operation is only implemented in selenium-rc, and should never result in a request making it across the wire");
+    KAT-END */
 };
 
 Selenium.prototype.getSpeed = function() {
@@ -1119,7 +1207,9 @@ Selenium.prototype.getSpeed = function() {
      *
      * @return string the execution speed in milliseconds.
      */
+    /* KAT-BEGIN fix Selenium command execution
     throw new SeleniumError("this operation is only implemented in selenium-rc, and should never result in a request making it across the wire");
+    KAT-END */
 };
 
 Selenium.prototype.findToggleButton = function(locator) {
@@ -2332,6 +2422,21 @@ Selenium.prototype.doDragAndDrop = function(locator, movementsString) {
     this.browserbot.triggerMouseEvent(element, 'mouseup', true, clientFinishX, clientFinishY);
 };
 
+Selenium.prototype.doDragAndDropToObjectByJqueryUI = function(locatorOfObjectToBeDragged, locatorOfDragDestinationObject) {
+    var draggable = $(this.browserbot.findElement(locatorOfObjectToBeDragged));
+    var droppable = $(this.browserbot.findElement(locatorOfDragDestinationObject));
+
+    droppableOffset = droppable.offset(),
+    draggableOffset = draggable.offset(),
+    dx = droppableOffset.left + (droppable.width() / 2) - draggableOffset.left,
+    dy = droppableOffset.top + (droppable.height() / 2) - draggableOffset.top;
+
+    draggable.simulate( "drag", {
+        dx: dx,
+        dy: dy
+    });
+}
+
 Selenium.prototype.doDragAndDropToObject = function(locatorOfObjectToBeDragged, locatorOfDragDestinationObject) {
     /** Drags an element and drops it on another element
      *
@@ -3039,18 +3144,32 @@ Selenium.prototype.doDeleteAllVisibleCookies = function() {
     //LOG.setLogLevelThreshold(logLevel);
 }*/
 // © Ming-Hung Hsu, SideeX Team
-Selenium.prototype.doRunScript = function(script) {
+Selenium.prototype.doRunScript = function (script, varName) {
 
     window.postMessage({
         direction: "from-content-runscript",
         script: script
     }, "*");
-    return this.browserbot.getRunScriptMessage().then(function(actualMessage) {
-        console.log(actualMessage);
-       if (actualMessage != "No error!!!!")
+    return this.browserbot.getRunScriptMessage().then(function (actualMessage) {
+        if (actualMessage.status !== undefined) {
+            if (actualMessage.status) {
+                if (varName) {
+                    return browser.runtime.sendMessage({ "storeStr": actualMessage.result, "storeVar": varName }).then(function() {
+                        return { result: 'success' };
+                    }).catch(function() {
+                        return { result: 'success' };
+                    });
+                } else {
+                    return Promise.resolve(true);
+                }
+            } else {
+                return Promise.reject(actualMessage.result);
+            }
+        } else if (actualMessage != "No error!!!!") {
             return Promise.reject(actualMessage);
-       else
+        } else {
             return Promise.resolve(true);
+        }
     });
 }
 
@@ -3125,6 +3244,17 @@ Selenium.prototype.doCaptureEntirePageScreenshot = function(filename, kwargs) {
      *                     (possibly obscuring black text).</dd>
      *                  </dl>
      */
+
+    return browser.runtime.sendMessage({ 
+        captureEntirePageScreenshot: true
+    }).then(function(captureResponse) {
+        return { 
+            result: 'success',
+            capturedScreenshot: captureResponse.image,
+            capturedScreenshotTitle: request.target
+        };
+    });
+
     if (!browserVersion.isChrome &&
         !(browserVersion.isIE && !browserVersion.isHTA)) {
         throw new SeleniumError('captureEntirePageScreenshot is only ' + 'implemented for Firefox ("firefox" or "chrome", NOT ' + '"firefoxproxy") and IE non-HTA ("iexploreproxy", NOT "iexplore" ' + 'or "iehta"). The current browser isn\'t one of them!');
